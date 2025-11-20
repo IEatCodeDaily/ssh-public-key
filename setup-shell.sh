@@ -131,8 +131,8 @@ if [ -f "${USER_HOME}/.tmux.conf" ]; then
 fi
 
 # Download config files from GitHub
-curl -fsSL https://raw.githubusercontent.com/IEatCodeDaily/infra-scripts/main/config/.zshrc -o "${USER_HOME}/.zshrc"
-curl -fsSL https://raw.githubusercontent.com/IEatCodeDaily/infra-scripts/main/config/.tmux.conf -o "${USER_HOME}/.tmux.conf"
+curl -fsSL https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/config/.zshrc -o "${USER_HOME}/.zshrc"
+curl -fsSL https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/config/.tmux.conf -o "${USER_HOME}/.tmux.conf"
 
 # Create ranger configuration directory
 mkdir -p "${USER_HOME}/.config/ranger"
