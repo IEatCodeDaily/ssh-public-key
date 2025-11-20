@@ -4,7 +4,7 @@
 export ZSH="$HOME/.oh-my-zsh"
 
 # Set theme
-ZSH_THEME="wedisagree"
+ZSH_THEME="xiong-chiamiov-plus"
 
 # Enable command correction
 ENABLE_CORRECTION="false"
