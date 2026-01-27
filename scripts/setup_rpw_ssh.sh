@@ -43,11 +43,11 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 # Check if user already exists
-if id "rpw" >/dev/null 2>&1; then
+if id "rpw" &>/dev/null; then
     print_warning "User 'rpw' already exists"
-    printf "Do you want to update SSH keys for existing user? (y/n) "
-    read -r REPLY
-    if [ "$REPLY" != "y" ] && [ "$REPLY" != "Y" ]; then
+    read -p "Do you want to update SSH keys for existing user? (y/n) " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
         print_info "Exiting script without making changes"
         exit 0
     fi
