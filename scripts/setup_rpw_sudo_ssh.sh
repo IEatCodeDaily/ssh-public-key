@@ -54,11 +54,11 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 # Check if user already exists
-if id "rpw" &>/dev/null; then
+if id "rpw" >/dev/null 2>&1; then
     print_warning "User 'rpw' already exists"
-    read -p "Do you want to update SSH keys and sudo privileges for existing user? (y/n) " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    printf "Do you want to update SSH keys and sudo privileges for existing user? (y/n) "
+    read -r REPLY
+    if [ "$REPLY" != "y" ] && [ "$REPLY" != "Y" ]; then
         print_info "Exiting script without making changes"
         exit 0
     fi
@@ -111,9 +111,8 @@ print_info "Configuring sudo privileges..."
 USE_NOPASSWD="${SUDO_NOPASSWD:-false}"
 if [ "$USE_NOPASSWD" = false ]; then
     print_question "Do you want passwordless sudo access (NOPASSWD)? (y/n) [n]: "
-    read -r -n 1 -t 30 response 2>/dev/null || response="n"
-    echo
-    if [[ $response =~ ^[Yy]$ ]]; then
+    read -r response 2>/dev/null || response="n"
+    if [ "$response" = "y" ] || [ "$response" = "Y" ]; then
         USE_NOPASSWD=true
     fi
 fi
