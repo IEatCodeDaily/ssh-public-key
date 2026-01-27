@@ -11,8 +11,8 @@
 #   - Other useful tools (ripgrep, bat, htop, neofetch, ncdu)
 #
 # Usage:
-#   curl -s https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup-shell.sh | sudo sh
-#   wget -O- https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup-shell.sh | sudo sh
+#   curl -s https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup-shell.sh | sudo bash
+#   wget -O- https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup-shell.sh | sudo bash
 ################################################################################
 
 set -o pipefail  # Safer pipe handling

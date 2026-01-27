@@ -12,13 +12,13 @@
 # 5. Grant sudo privileges (optional NOPASSWD)
 #
 # Usage:
-#   curl -s https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup_rpw_sudo_ssh.sh | sudo sh
-#   wget -O- https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup_rpw_sudo_ssh.sh | sudo sh
+#   curl -s https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup_rpw_sudo_ssh.sh | sudo bash
+#   wget -O- https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup_rpw_sudo_ssh.sh | sudo bash
 #
 # For passwordless sudo (NOPASSWD), set the environment variable:
 #   export SUDO_NOPASSWD=true
 # or run with:
-#   curl -s ... | sudo SUDO_NOPASSWD=true sh
+#   curl -s ... | sudo SUDO_NOPASSWD=true bash
 ################################################################################
 
 set -e  # Exit immediately if a command exits with a non-zero status

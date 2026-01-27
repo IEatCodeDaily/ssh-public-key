@@ -11,8 +11,8 @@
 # 4. Configure SSH settings for public key authentication
 #
 # Usage:
-#   curl -s https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup_rpw_ssh.sh | sudo sh
-#   wget -O- https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup_rpw_ssh.sh | sudo sh
+#   curl -s https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup_rpw_ssh.sh | sudo bash
+#   wget -O- https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup_rpw_ssh.sh | sudo bash
 ################################################################################
 
 set -e  # Exit immediately if a command exits with a non-zero status
