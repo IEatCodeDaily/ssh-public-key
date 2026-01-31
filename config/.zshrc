@@ -87,3 +87,42 @@ if [ -d "$HOME/.ssh/keys" ]; then
     fi
   done
 fi
+
+# Run fastfetch on startup (much faster than neofetch)
+if command -v fastfetch >/dev/null 2>&1; then
+  fastfetch
+fi
+
+# NVM lazy loading - only load when actually using node/npm/npx
+export NVM_DIR="$HOME/.nvm"
+
+# Function to load nvm lazily
+lazy_load_nvm() {
+  unset -f node npm npx nvm
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+}
+
+# Create placeholder functions that trigger lazy loading
+node() {
+  lazy_load_nvm
+  node "$@"
+}
+
+npm() {
+  lazy_load_nvm
+  npm "$@"
+}
+
+npx() {
+  lazy_load_nvm
+  npx "$@"
+}
+
+nvm() {
+  lazy_load_nvm
+  nvm "$@"
+}
+
+# Add local bin to PATH
+export PATH="$HOME/.local/bin:$PATH"

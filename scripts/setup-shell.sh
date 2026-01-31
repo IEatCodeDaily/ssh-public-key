@@ -8,7 +8,7 @@
 #   - tmux terminal multiplexer
 #   - ranger file manager
 #   - fzf fuzzy finder
-#   - Other useful tools (ripgrep, bat, htop, neofetch, ncdu)
+#   - Other useful tools (ripgrep, bat, htop, fastfetch, ncdu)
 #
 # Usage:
 #   curl -s https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup-shell.sh | sudo bash
@@ -92,14 +92,26 @@ apt-get install -y fzf || print_warning "fzf installation failed, continuing..."
 
 # Install other useful tools
 print_info "Installing additional tools..."
-apt-get install -y ripgrep ncdu htop neofetch || {
+apt-get install -y ripgrep ncdu htop || {
     print_warning "Some tools might not be available in the standard repositories."
     print_warning "Installing available tools and continuing..."
     apt-get install -y ripgrep || true
     apt-get install -y ncdu || true
     apt-get install -y htop || true
-    apt-get install -y neofetch || true
 }
+
+# Install fastfetch from GitHub releases (much faster than neofetch)
+print_info "Installing fastfetch..."
+FASTFETCH_VERSION=$(curl -s https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
+FASTFETCH_URL="https://github.com/fastfetch-cli/fastfetch/releases/download/${FASTFETCH_VERSION}/fastfetch-linux-amd64.deb"
+if curl -fsSL "$FASTFETCH_URL" -o /tmp/fastfetch.deb; then
+    dpkg -i /tmp/fastfetch.deb || apt-get install -y -f
+    rm -f /tmp/fastfetch.deb
+    print_info "fastfetch ${FASTFETCH_VERSION} installed successfully"
+else
+    print_warning "Failed to download fastfetch, falling back to neofetch..."
+    apt-get install -y neofetch || print_warning "neofetch installation also failed"
+fi
 
 # Install bat (sometimes packaged as batcat in Debian)
 apt-get install -y bat || apt-get install -y batcat || true
@@ -238,8 +250,12 @@ bindkey '^[[A' up-line-or-search
 bindkey '^[[B' down-line-or-search
 bindkey '^[[Z' reverse-menu-complete
 
-# Run neofetch on startup
-neofetch
+# Run fastfetch on startup (much faster than neofetch)
+if command -v fastfetch >/dev/null 2>&1; then
+  fastfetch
+else
+  neofetch
+fi
 EOF
     fi
 fi
@@ -275,12 +291,14 @@ if ! grep -q "alias fm='ranger'" "${USER_HOME}/.zshrc"; then
     echo "alias fm='ranger'" >> "${USER_HOME}/.zshrc"
 fi
 
-# Add neofetch to the end of .zshrc to run it on every terminal start
-if ! grep -q "# Run neofetch on startup" "${USER_HOME}/.zshrc"; then
-    print_info "Adding neofetch to startup in .zshrc..."
+# Add fastfetch to the end of .zshrc to run it on every terminal start
+if ! grep -q "# Run fastfetch on startup" "${USER_HOME}/.zshrc"; then
+    print_info "Adding fastfetch to startup in .zshrc..."
     echo "" >> "${USER_HOME}/.zshrc"
-    echo "# Run neofetch on startup" >> "${USER_HOME}/.zshrc"
-    echo "neofetch" >> "${USER_HOME}/.zshrc"
+    echo "# Run fastfetch on startup (much faster than neofetch)" >> "${USER_HOME}/.zshrc"
+    echo "if command -v fastfetch >/dev/null 2>&1; then" >> "${USER_HOME}/.zshrc"
+    echo "  fastfetch" >> "${USER_HOME}/.zshrc"
+    echo "fi" >> "${USER_HOME}/.zshrc"
 fi
 
 # Set zsh as default shell for user
@@ -301,7 +319,7 @@ print_info "  - fzf (fuzzy finder)"
 print_info "  - ripgrep (fast grep)"
 print_info "  - bat (better cat)"
 print_info "  - htop (process viewer)"
-print_info "  - neofetch (system info)"
+print_info "  - fastfetch (system info, 276x faster than neofetch)"
 print_info "  - ncdu (disk usage analyzer)"
 echo ""
 print_info "Configuration files:"
@@ -309,14 +327,18 @@ print_info "  - ~/.zshrc (zsh configuration)"
 print_info "  - ~/.tmux.conf (tmux configuration)"
 print_info "  - ~/.config/ranger/ (ranger configuration)"
 echo ""
-print_info "Starting zsh with neofetch now..."
+print_info "Starting zsh with fastfetch now..."
 echo ""
 
-# Create a temporary script to launch zsh with neofetch for the current session
+# Create a temporary script to launch zsh with fastfetch for the current session
 TMP_SCRIPT=$(mktemp)
 cat > $TMP_SCRIPT << EOL
 #!/bin/bash
-neofetch
+if command -v fastfetch >/dev/null 2>&1; then
+  fastfetch
+else
+  neofetch
+fi
 exec zsh
 EOL
 
