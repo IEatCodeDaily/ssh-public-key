@@ -79,7 +79,7 @@ Sets up a complete terminal environment with:
 - **Terminal Multiplexer:** tmux
 - **File Manager:** ranger with preview capabilities
 - **Fuzzy Finder:** fzf
-- **Other Tools:** ripgrep, bat, htop, neofetch, ncdu
+- **Other Tools:** ripgrep, bat, htop, fastfetch, ncdu
 
 **Features:**
 - Installs all necessary packages
