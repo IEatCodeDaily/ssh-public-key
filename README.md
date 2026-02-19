@@ -9,19 +9,19 @@ This repository contains SSH public keys and setup scripts for configuring remot
 Creates user `rpw` with SSH access and sudo privileges. Optionally enables passwordless sudo.
 
 ```bash
-curl -s https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup_rpw_sudo_ssh.sh | sudo sh
+curl -s https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup_rpw_sudo_ssh.sh | sudo bash
 ```
 
 or
 
 ```bash
-wget -O- https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup_rpw_sudo_ssh.sh | sudo sh
+wget -O- https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup_rpw_sudo_ssh.sh | sudo bash
 ```
 
 To enable passwordless sudo (NOPASSWD), set the environment variable:
 
 ```bash
-curl -s https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup_rpw_sudo_ssh.sh | sudo SUDO_NOPASSWD=true sh
+curl -s https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup_rpw_sudo_ssh.sh | sudo SUDO_NOPASSWD=true bash
 ```
 
 ### Without Sudo Access
@@ -29,13 +29,13 @@ curl -s https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scri
 Creates user `rpw` with SSH access only (no sudo privileges).
 
 ```bash
-curl -s https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup_rpw_ssh.sh | sudo sh
+curl -s https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup_rpw_ssh.sh | sudo bash
 ```
 
 or
 
 ```bash
-wget -O- https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup_rpw_ssh.sh | sudo sh
+wget -O- https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup_rpw_ssh.sh | sudo bash
 ```
 
 ## Scripts
@@ -90,7 +90,7 @@ Sets up a complete terminal environment with:
 
 **Usage:**
 ```bash
-curl -s https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup-shell.sh | sudo sh
+curl -s https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup-shell.sh | sudo bash
 ```
 
 ## Repository Structure

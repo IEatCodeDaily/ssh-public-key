@@ -56,12 +56,21 @@ fi
 # Check if user already exists
 if id "rpw" &>/dev/null; then
     print_warning "User 'rpw' already exists"
-    read -p "Do you want to update SSH keys and sudo privileges for existing user? (y/n) " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        print_info "Exiting script without making changes"
-        exit 0
+    
+    # Check if running in interactive mode (stdin is a terminal)
+    if [ -t 0 ]; then
+        # Interactive mode - ask for confirmation
+        read -p "Do you want to update SSH keys and sudo privileges for existing user? (y/n) " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            print_info "Exiting script without making changes"
+            exit 0
+        fi
+    else
+        # Non-interactive mode (piped from curl/wget) - automatically update
+        print_info "Running in non-interactive mode - automatically updating SSH keys and sudo privileges"
     fi
+    
     print_info "Updating SSH keys and sudo privileges for existing user 'rpw'..."
     USER_EXISTS=true
 else
@@ -110,11 +119,17 @@ print_info "Configuring sudo privileges..."
 # Check if we should use NOPASSWD sudo
 USE_NOPASSWD="${SUDO_NOPASSWD:-false}"
 if [ "$USE_NOPASSWD" = false ]; then
-    print_question "Do you want passwordless sudo access (NOPASSWD)? (y/n) [n]: "
-    read -r -n 1 -t 30 response 2>/dev/null || response="n"
-    echo
-    if [[ $response =~ ^[Yy]$ ]]; then
-        USE_NOPASSWD=true
+    # Only prompt if running in interactive mode
+    if [ -t 0 ]; then
+        print_question "Do you want passwordless sudo access (NOPASSWD)? (y/n) [n]: "
+        read -r -n 1 -t 30 response 2>/dev/null || response="n"
+        echo
+        if [[ $response =~ ^[Yy]$ ]]; then
+            USE_NOPASSWD=true
+        fi
+    else
+        # Non-interactive mode - default to false
+        print_info "Non-interactive mode: Using default sudo configuration (password required)"
     fi
 fi
 

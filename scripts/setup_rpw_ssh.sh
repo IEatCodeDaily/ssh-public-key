@@ -45,12 +45,21 @@ fi
 # Check if user already exists
 if id "rpw" &>/dev/null; then
     print_warning "User 'rpw' already exists"
-    read -p "Do you want to update SSH keys for existing user? (y/n) " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        print_info "Exiting script without making changes"
-        exit 0
+    
+    # Check if running in interactive mode (stdin is a terminal)
+    if [ -t 0 ]; then
+        # Interactive mode - ask for confirmation
+        read -p "Do you want to update SSH keys for existing user? (y/n) " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            print_info "Exiting script without making changes"
+            exit 0
+        fi
+    else
+        # Non-interactive mode (piped from curl/wget) - automatically update
+        print_info "Running in non-interactive mode - automatically updating SSH keys"
     fi
+    
     print_info "Updating SSH keys for existing user 'rpw'..."
     USER_EXISTS=true
 else
