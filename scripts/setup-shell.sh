@@ -273,9 +273,9 @@ if ! curl -fsSL https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/m
 fi
 
 # Set correct ownership for config files
-chown $ACTUAL_USER:$ACTUAL_USER ${USER_HOME}/.zshrc
+chown "$ACTUAL_USER:$ACTUAL_USER" "${USER_HOME}/.zshrc"
 if [ -f "${USER_HOME}/.tmux.conf" ]; then
-    chown $ACTUAL_USER:$ACTUAL_USER ${USER_HOME}/.tmux.conf
+    chown "$ACTUAL_USER:$ACTUAL_USER" "${USER_HOME}/.tmux.conf"
 fi
 
 # Create ranger configuration directory
