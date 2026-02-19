@@ -15,6 +15,19 @@
 #   wget -O- https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup_rpw_ssh.sh | sudo bash
 ################################################################################
 
+# Check if running with bash
+if [ -z "$BASH_VERSION" ]; then
+    echo "ERROR: This script requires bash, but it's being run with sh or another shell."
+    echo "Please use one of the following commands instead:"
+    echo ""
+    echo "  curl -s https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup_rpw_ssh.sh | sudo bash"
+    echo ""
+    echo "  wget -O- https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup_rpw_ssh.sh | sudo bash"
+    echo ""
+    echo "Note: Use 'bash' at the end, NOT 'sh'"
+    exit 1
+fi
+
 set -e  # Exit immediately if a command exits with a non-zero status
 
 # Color codes for output

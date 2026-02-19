@@ -15,6 +15,20 @@
 #   wget -O- https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup-shell.sh | sudo bash
 ################################################################################
 
+# Check if running with bash
+if [ -z "$BASH_VERSION" ]; then
+    echo "ERROR: This script requires bash, but it's being run with sh or another shell."
+    echo "Please use one of the following commands instead:"
+    echo ""
+    echo "  curl -s https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup-shell.sh | sudo bash"
+    echo ""
+    echo "  wget -O- https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/scripts/setup-shell.sh | sudo bash"
+    echo ""
+    echo "Note: Use 'bash' at the end, NOT 'sh'"
+    exit 1
+fi
+
+set -e           # Exit immediately if a command exits with a non-zero status
 set -o pipefail  # Safer pipe handling
 
 # Color codes for output
@@ -168,14 +182,9 @@ fi
 
 # Download config files from GitHub with error handling
 if ! curl -fsSL https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/config/.zshrc -o "${USER_HOME}/.zshrc"; then
-    print_warning "Failed to download .zshrc from GitHub, using local default..."
-    # Use local default .zshrc from config folder if available
-    if [ -f "/mnt/e/Projects/ssh-public-key/config/.zshrc" ]; then
-        cp /mnt/e/Projects/ssh-public-key/config/.zshrc "${USER_HOME}/.zshrc"
-    else
-        print_warning "Local .zshrc not found, using embedded default..."
-        # Embedded fallback configuration
-        cat > "${USER_HOME}/.zshrc" << 'EOF'
+    print_warning "Failed to download .zshrc from GitHub, using embedded default..."
+    # Embedded fallback configuration
+    cat > "${USER_HOME}/.zshrc" << 'EOF'
 # Path to Oh My Zsh installation
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -257,21 +266,17 @@ else
   neofetch
 fi
 EOF
-    fi
 fi
 
 if ! curl -fsSL https://raw.githubusercontent.com/IEatCodeDaily/ssh-public-key/main/config/.tmux.conf -o "${USER_HOME}/.tmux.conf"; then
-    print_warning "Failed to download .tmux.conf from GitHub, using local default..."
-    if [ -f "/mnt/e/Projects/ssh-public-key/config/.tmux.conf" ]; then
-        cp /mnt/e/Projects/ssh-public-key/config/.tmux.conf "${USER_HOME}/.tmux.conf"
-    else
-        print_warning "Local .tmux.conf not found, skipping tmux configuration..."
-    fi
+    print_warning "Failed to download .tmux.conf from GitHub, skipping tmux configuration..."
 fi
 
 # Set correct ownership for config files
-chown $ACTUAL_USER:$ACTUAL_USER ${USER_HOME}/.zshrc
-chown $ACTUAL_USER:$ACTUAL_USER ${USER_HOME}/.tmux.conf
+chown "$ACTUAL_USER:$ACTUAL_USER" "${USER_HOME}/.zshrc"
+if [ -f "${USER_HOME}/.tmux.conf" ]; then
+    chown "$ACTUAL_USER:$ACTUAL_USER" "${USER_HOME}/.tmux.conf"
+fi
 
 # Create ranger configuration directory
 print_info "Setting up ranger file manager..."
